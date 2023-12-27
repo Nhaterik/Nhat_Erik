@@ -107,45 +107,47 @@
 //}
 ///*-------------------------------------------------------------------------------------------------------------------------------*/
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-#define max 100
-typedef struct{
-	 char name[max];
-	 short age;
-}author;
-typedef struct{
-	short id;
-	char name[max];
-	short NumAuthor;
-	author *pAuthor;
-}book;
-void input(book*b)
-{
-	scanf("%d\n",&b->id);
-	gets(b->name);
-	scanf("%d",&b->NumAuthor);
-	b->pAuthor=(author*)malloc(b->NumAuthor*sizeof(author));
-	for (int i=0;i<b->NumAuthor;i++)
-	{
-		    fflush(stdin);
-			gets((b->pAuthor+i)->name);
-        	scanf("%d",&(b->pAuthor+i)->age);
-        	
 
-	}
+#define max 100
+
+typedef struct {
+    char name[max];
+    short age;
+} author;
+
+typedef struct {
+    short id;
+    char name[max];
+    short NumAuthor;
+    author* pAuthor;
+} book;
+
+void input(book* b) {
+    scanf("%hd", &b->id); // Use %hd for short
+    getchar(); // Consume newline left in the buffer
+    fgets(b->name, sizeof(b->name), stdin);
+
+    scanf("%hd", &b->NumAuthor);
+  getchar();
+    b->pAuthor = (author*)malloc(b->NumAuthor * sizeof(author));
+    for (int i = 0; i < b->NumAuthor; i++) {
+        fgets((b->pAuthor + i)->name, sizeof((b->pAuthor + i)->name), stdin);
+        scanf("%hd", &(b->pAuthor + i)->age);
+		 getchar();
+    }
 }
+
 void output(book b) {
-	printf("book {id: |%d|, name: |%s| }",b.id,b.name);
-	for (int i=0;i<b.NumAuthor;i++)
-	printf("\n {author %d name: |%s|,age: |%d| }",i+1,(b.pAuthor+i)->name,(b.pAuthor+i)->age);
-	
+    printf("book {id: |%hd|, name: |%s| }\n", b.id, b.name);
+    for (int i = 0; i < b.NumAuthor; i++)
+        printf("{author %d name: |%s|, age: |%hd| }\n", i + 1, (b.pAuthor + i)->name, (b.pAuthor + i)->age);
 }
-int main()
-{
-	book b;
-	 input(&b); 
- output(b);
- free(b.pAuthor);
+
+int main() {
+    book b;
+    input(&b);
+    output(b);
+    free(b.pAuthor);
     return 0;
 }
